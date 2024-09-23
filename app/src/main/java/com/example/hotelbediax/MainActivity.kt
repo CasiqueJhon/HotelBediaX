@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.hotelbediax.presentation.ui.AddNewDestinationScreen
 import com.example.hotelbediax.presentation.ui.DestinationListScreen
 import com.example.hotelbediax.presentation.ui.SplashScreen
 import com.example.hotelbediax.theme.HotelBediaXTheme
@@ -31,7 +32,22 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("destinationList") {
-                        DestinationListScreen()
+                        DestinationListScreen(
+                            onAddDestinationClick = {
+                                navController.navigate("addDestination")
+                            }
+                        )
+                    }
+
+                    composable("addDestination") {
+                        AddNewDestinationScreen(
+                            onDestinationAdded = { name, description, location, imageUrl ->
+                                navController.popBackStack()
+                            },
+                            onBack = {
+                                navController.popBackStack()
+                            }
+                        )
                     }
                 }
             }

@@ -3,4 +3,13 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="splash_subtitle">Your destination management tool</string>
     <string name="error_text">Error, try again later</string>
+    <string name="list_title">Discover Your Next Adventure</string>
+    <string name="list_description">Explore unique destinations around the world</string>
+    <string name="add_new_destination">Explore unique destinations around the world</string>
+    <string name="destination_name">Explore unique destinations around the world</string>
+    <string name="destination_description">Explore unique destinations around the world</string>
+    <string name="destination_image_url">Explore unique destinations around the world</string>
+    <string name="destination_location">Explore unique destinations around the world</string>
+    <string name="add_destination">Explore unique destinations around the world</string>
+    <string name="back">Explore unique destinations around the world</string>
 </resources>

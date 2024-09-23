@@ -12,6 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,9 +28,10 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController, viewModel: SplashViewModel = hiltViewModel()) {
+
     LaunchedEffect(Unit) {
         viewModel.loadInitialData()
-        delay(2000)
+        delay(3000)
         navController.navigate("destinationList") {
             popUpTo("splash") { inclusive = true }
         }
@@ -51,13 +54,13 @@ fun SplashScreen(navController: NavController, viewModel: SplashViewModel = hilt
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(R.string.splash_subtitle),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = Color.Gray
             )
         }

@@ -3,7 +3,7 @@ package com.example.hotelbediax.di
 import android.content.Context
 import androidx.room.Room
 import com.example.hotelbediax.data.local.DestinationDao
-import com.example.hotelbediax.data.local.DestinationDatabase
+import com.example.hotelbediax.data.local.AppDataBase
 import com.example.hotelbediax.data.remote.DestinationService
 import dagger.Module
 import dagger.Provides
@@ -38,17 +38,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): DestinationDatabase {
+    fun provideDatabase(@ApplicationContext context: Context): AppDataBase {
         return Room.databaseBuilder(
             context.applicationContext,
-            DestinationDatabase::class.java,
+            AppDataBase::class.java,
             "destination_database"
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideDestinationDao(database: DestinationDatabase): DestinationDao {
+    fun provideDestinationDao(database: AppDataBase): DestinationDao {
         return database.destinationDao()
     }
 

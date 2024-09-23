@@ -16,7 +16,7 @@ interface DestinationDao {
     @Query("SELECT * FROM destination ORDER BY id DESC")
     fun getPagedDestinations(): PagingSource<Int, DestinationEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertDestination(destination: DestinationEntity)
 
     @Delete
