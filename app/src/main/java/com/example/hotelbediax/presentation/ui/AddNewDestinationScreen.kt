@@ -55,6 +55,9 @@ fun AddNewDestinationScreen(
 
     val destinationAdded by viewModel.destinationAdded.collectAsState()
 
+    val isFormValid = name.isNotBlank() && description.isNotBlank() &&
+            detailedDescription.isNotBlank() && location.isNotBlank() && imageUrl.isNotBlank()
+
     LaunchedEffect(destinationAdded) {
         if (destinationAdded) {
             onDestinationAdded()
@@ -89,6 +92,7 @@ fun AddNewDestinationScreen(
                 )
             )
 
+            // Campos de texto
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -160,16 +164,16 @@ fun AddNewDestinationScreen(
                 onClick = {
                     viewModel.addNewDestination(name, description, detailedDescription, location, imageUrl)
                 },
+                enabled = isFormValid,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF3498DB),
+                    containerColor = if (isFormValid) Color(0xFF3498DB) else Color.DarkGray,
                     contentColor = Color.White
                 )
             ) {
                 Text(text = stringResource(R.string.add_destination))
             }
 
-            // Botón para volver atrás
             OutlinedButton(
                 onClick = onBack,
                 modifier = Modifier.fillMaxWidth(),

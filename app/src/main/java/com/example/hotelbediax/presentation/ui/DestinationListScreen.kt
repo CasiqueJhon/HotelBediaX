@@ -2,6 +2,7 @@ package com.example.hotelbediax.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,19 +10,29 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FractionalThreshold
+import androidx.compose.material.SwipeableState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.rememberSwipeableState
+import androidx.compose.material.swipeable
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +44,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -42,14 +54,15 @@ import com.example.hotelbediax.R
 import com.example.hotelbediax.data.local.DestinationEntity
 import com.example.hotelbediax.presentation.viewmodel.DestinationViewModel
 import com.skydoves.landscapist.glide.GlideImage
+import kotlin.math.roundToInt
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DestinationListScreen(
     viewModel: DestinationViewModel = hiltViewModel(),
     onAddDestinationClick: () -> Unit,
     onDestinationClick: (Int) -> Unit
 ) {
-
     val lazyPagingItems = viewModel.pagedDestinations.collectAsLazyPagingItems()
 
     val colors = listOf(
@@ -79,14 +92,14 @@ fun DestinationListScreen(
             IconButton(
                 onClick = onAddDestinationClick,
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(64.dp)
                     .align(Alignment.TopEnd)
                     .padding(top = dimensionResource(R.dimen.large_padding), end = dimensionResource(R.dimen.medium_padding))
             ) {
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    painter = painterResource(R.drawable.baseline_add_location),
                     contentDescription = "Add Destination",
-                    tint = Color.Black // Color del ícono
+                    tint = Color.Black
                 )
             }
         }
@@ -103,19 +116,29 @@ fun DestinationListScreen(
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding)),
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
-            items(lazyPagingItems.itemCount) { index ->
+            items(lazyPagingItems.itemCount, key = { lazyPagingItems[it]?.id ?: 0 }) { index ->
                 val destination = lazyPagingItems[index]
 
                 destination?.let {
                     val backgroundBrush = colors[index % colors.size]
-                    DestinationItem(
-                        destination = it,
-                        backgroundBrush = backgroundBrush,
-                        onClick = { onDestinationClick(it.id) }
-                    )
+
+                    var dismissed by remember { mutableStateOf(false) }
+                    val swipeableState = rememberSwipeableState(initialValue = 0)
+
+                    if (!dismissed) {
+                        DestinationItem(
+                            destination = it,
+                            backgroundBrush = backgroundBrush,
+                            onClick = { onDestinationClick(it.id) },
+                            onDismiss = {
+                                dismissed = true
+                                viewModel.deleteDestination(it)
+                            },
+                            swipeableState = swipeableState
+                        )
+                    }
                 }
             }
 
@@ -133,13 +156,30 @@ fun DestinationListScreen(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DestinationItem(destination: DestinationEntity, backgroundBrush: Brush, onClick: () -> Unit) {
+fun DestinationItem(
+    destination: DestinationEntity,
+    backgroundBrush: Brush,
+    onClick: () -> Unit,
+    onDismiss: () -> Unit,
+    swipeableState: SwipeableState<Int>
+) {
+    val swipeThreshold = 300.dp
+    val anchors = mapOf(0f to 0, 300f to 1)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(backgroundBrush)
+            .swipeable(
+                state = swipeableState,
+                anchors = anchors,
+                thresholds = { _, _ -> FractionalThreshold(0.5f) },
+                orientation = Orientation.Horizontal
+            )
+            .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
             .clickable(onClick = onClick)
     ) {
         Row(
@@ -185,7 +225,17 @@ fun DestinationItem(destination: DestinationEntity, backgroundBrush: Brush, onCl
             )
         }
     }
+
+    if (swipeableState.currentValue == 1) {
+        onDismiss()
+    }
 }
+
+
+
+
+
+
 
 
 
