@@ -13,6 +13,7 @@ data class DestinationEntity(
     val id: Int = 0,
     val name: String,
     val description: String,
+    val detailedDescription: String,
     val location: String,
     val imageUrl: String
 )

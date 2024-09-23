@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
                     composable("addDestination") {
                         AddNewDestinationScreen(
-                            onDestinationAdded = { name, description, location, imageUrl ->
+                            onDestinationAdded = {
                                 navController.popBackStack()
                             },
                             onBack = {
@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    // Pantalla de detalle del destino
                     composable(
                         route = "destinationDetail/{destinationId}",
                         arguments = listOf(navArgument("destinationId") { type = NavType.IntType })

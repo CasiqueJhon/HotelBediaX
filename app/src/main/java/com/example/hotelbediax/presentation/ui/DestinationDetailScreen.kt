@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +28,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -36,10 +40,9 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun DestinationDetailScreen(destinationId: Int, viewModel: DestinationViewModel = hiltViewModel()) {
-    // Observa el StateFlow de selectedDestination
+
     val destination by viewModel.selectedDestination.collectAsState()
 
-    // Llamamos a getDestinationById cuando la pantalla se carga
     LaunchedEffect(destinationId) {
         viewModel.getDestinationById(destinationId)
     }
@@ -50,38 +53,35 @@ fun DestinationDetailScreen(destinationId: Int, viewModel: DestinationViewModel 
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xFF8E44AD), Color(0xFF3498DB)) // Cambia los colores según el estilo que desees
+                        colors = listOf(colorResource(R.color.purple_degrade_background), colorResource(R.color.blue_degrade_background))
                     )
                 )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
-                    .clip(RoundedCornerShape(16.dp)) // Para bordes redondeados en la columna
-                    .background(Color.White) // Fondo blanco para los detalles
-                    .padding(16.dp) // Padding interno para los textos
+                    .padding(dimensionResource(R.dimen.large_padding))
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.large_padding)))
+                    .background(Color.White)
+                    .padding(dimensionResource(R.dimen.large_padding))
             ) {
-                // Sección de la imagen con un encabezado grande
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
-                        .clip(RoundedCornerShape(16.dp)) // Bordes redondeados en la imagen
+                        .clip(RoundedCornerShape(dimensionResource(R.dimen.large_padding)))
                 ) {
                     GlideImage(
                         imageModel = it.imageUrl,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                         placeHolder = painterResource(R.drawable.baseline_card_travel_24),
                         error = painterResource(R.drawable.baseline_error_24)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.large_padding)))
 
-                // Nombre del destino
                 Text(
                     text = it.name,
                     style = MaterialTheme.typography.displaySmall.copy(
@@ -90,9 +90,8 @@ fun DestinationDetailScreen(destinationId: Int, viewModel: DestinationViewModel 
                     )
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
-                // Ubicación
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(R.drawable.baseline_location),
@@ -107,16 +106,20 @@ fun DestinationDetailScreen(destinationId: Int, viewModel: DestinationViewModel 
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.twenty_padding)))
 
-                // Descripción
-                Text(
-                    text = it.description,
-                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black),
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-
-                // Aquí podrías agregar más detalles, como un botón o información adicional.
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = it.detailedDescription,
+                        style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black),
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
             }
         }
     } ?: run {
@@ -128,5 +131,9 @@ fun DestinationDetailScreen(destinationId: Int, viewModel: DestinationViewModel 
         }
     }
 }
+
+
+
+
 
 

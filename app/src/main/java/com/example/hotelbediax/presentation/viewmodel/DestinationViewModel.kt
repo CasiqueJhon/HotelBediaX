@@ -29,26 +29,12 @@ class DestinationViewModel @Inject constructor(
     val selectedDestination: StateFlow<DestinationEntity?> get() = _selectedDestination
 
     init {
-        loadInitialData()  // Cargamos los datos iniciales al iniciar el ViewModel
+        loadInitialData()
     }
 
     private fun loadInitialData() {
         viewModelScope.launch {
             destinationRepository.loadInitialData()
-            _destinations.value = destinationRepository.getAllDestinations()
-        }
-    }
-
-    fun insertDestination(destination: DestinationEntity) {
-        viewModelScope.launch {
-            destinationRepository.insertDestination(destination)
-            _destinations.value = destinationRepository.getAllDestinations()
-        }
-    }
-
-    fun deleteDestination(destination: DestinationEntity) {
-        viewModelScope.launch {
-            destinationRepository.deleteDestination(destination)
             _destinations.value = destinationRepository.getAllDestinations()
         }
     }
@@ -59,6 +45,13 @@ class DestinationViewModel @Inject constructor(
                 destinationRepository.getDestinationById(id)
             }
             _selectedDestination.value = destination
+        }
+    }
+
+    fun deleteDestination(destination: DestinationEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            destinationRepository.deleteDestination(destination)
+            _destinations.value = destinationRepository.getAllDestinations()
         }
     }
 

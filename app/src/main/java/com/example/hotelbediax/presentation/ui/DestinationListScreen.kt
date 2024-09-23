@@ -27,17 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -52,7 +47,7 @@ import com.skydoves.landscapist.glide.GlideImage
 fun DestinationListScreen(
     viewModel: DestinationViewModel = hiltViewModel(),
     onAddDestinationClick: () -> Unit,
-    onDestinationClick: (Int) -> Unit // Agregamos el callback
+    onDestinationClick: (Int) -> Unit
 ) {
 
     val lazyPagingItems = viewModel.pagedDestinations.collectAsLazyPagingItems()
@@ -78,13 +73,13 @@ fun DestinationListScreen(
                 ),
                 modifier = Modifier
                     .padding(start = dimensionResource(R.dimen.small_padding), top = dimensionResource(R.dimen.large_padding))
-                    .align(Alignment.CenterStart) // Alineado a la izquierda
+                    .align(Alignment.CenterStart)
             )
 
             IconButton(
                 onClick = onAddDestinationClick,
                 modifier = Modifier
-                    .size(48.dp) // Tamaño del botón
+                    .size(48.dp)
                     .align(Alignment.TopEnd)
                     .padding(top = dimensionResource(R.dimen.large_padding), end = dimensionResource(R.dimen.medium_padding))
             ) {
@@ -145,7 +140,7 @@ fun DestinationItem(destination: DestinationEntity, backgroundBrush: Brush, onCl
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(backgroundBrush)
-            .clickable(onClick = onClick) // Hacemos el ítem clicable
+            .clickable(onClick = onClick)
     ) {
         Row(
             modifier = Modifier

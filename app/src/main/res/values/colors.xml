@@ -15,4 +15,6 @@
     <color name="purple_last_degrade_item">#FF9013FE</color>
     <color name="light_blue_first_degrade_item">#FF50C9C3</color>
     <color name="cyan_last_degrade_item">#FF96DEDA</color>
+    <color name="purple_degrade_background">#FF8E44AD</color>
+    <color name="blue_degrade_background">#FF3498DB</color>
 </resources>
