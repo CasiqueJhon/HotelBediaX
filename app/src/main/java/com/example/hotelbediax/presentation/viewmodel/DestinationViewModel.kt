@@ -6,9 +6,11 @@ import androidx.paging.cachedIn
 import com.example.hotelbediax.data.local.DestinationEntity
 import com.example.hotelbediax.data.repository.DestinationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +24,9 @@ class DestinationViewModel @Inject constructor(
 
     private val _destinations = MutableStateFlow<List<DestinationEntity>>(emptyList())
     val destinations: StateFlow<List<DestinationEntity>> get() = _destinations
+
+    private val _selectedDestination = MutableStateFlow<DestinationEntity?>(null)
+    val selectedDestination: StateFlow<DestinationEntity?> get() = _selectedDestination
 
     init {
         loadInitialData()  // Cargamos los datos iniciales al iniciar el ViewModel
@@ -47,4 +52,14 @@ class DestinationViewModel @Inject constructor(
             _destinations.value = destinationRepository.getAllDestinations()
         }
     }
+
+    fun getDestinationById(id: Int) {
+        viewModelScope.launch {
+            val destination = withContext(Dispatchers.IO) {
+                destinationRepository.getDestinationById(id)
+            }
+            _selectedDestination.value = destination
+        }
+    }
+
 }

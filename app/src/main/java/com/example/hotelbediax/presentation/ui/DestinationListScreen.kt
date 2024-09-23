@@ -1,6 +1,7 @@
 package com.example.hotelbediax.presentation.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,7 +49,11 @@ import com.example.hotelbediax.presentation.viewmodel.DestinationViewModel
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun DestinationListScreen(viewModel: DestinationViewModel = hiltViewModel(), onAddDestinationClick: () -> Unit) {
+fun DestinationListScreen(
+    viewModel: DestinationViewModel = hiltViewModel(),
+    onAddDestinationClick: () -> Unit,
+    onDestinationClick: (Int) -> Unit // Agregamos el callback
+) {
 
     val lazyPagingItems = viewModel.pagedDestinations.collectAsLazyPagingItems()
 
@@ -111,7 +116,11 @@ fun DestinationListScreen(viewModel: DestinationViewModel = hiltViewModel(), onA
 
                 destination?.let {
                     val backgroundBrush = colors[index % colors.size]
-                    DestinationItem(destination = it, backgroundBrush = backgroundBrush)
+                    DestinationItem(
+                        destination = it,
+                        backgroundBrush = backgroundBrush,
+                        onClick = { onDestinationClick(it.id) }
+                    )
                 }
             }
 
@@ -130,12 +139,13 @@ fun DestinationListScreen(viewModel: DestinationViewModel = hiltViewModel(), onA
 }
 
 @Composable
-fun DestinationItem(destination: DestinationEntity, backgroundBrush: Brush) {
+fun DestinationItem(destination: DestinationEntity, backgroundBrush: Brush, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(backgroundBrush)
+            .clickable(onClick = onClick) // Hacemos el ítem clicable
     ) {
         Row(
             modifier = Modifier

@@ -32,6 +32,10 @@ class DestinationRepository @Inject constructor(
         destinationDao.deleteDestination(destination)
     }
 
+    suspend fun getDestinationById(id: Int): DestinationEntity? {
+        return destinationDao.getDestinationById(id)
+    }
+
     /**
      * if there is no data in the local database, you can simulate loading remote data.
      * by inserting a sample destination into the local database.
