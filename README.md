@@ -28,13 +28,20 @@ Friendly animations and UI transitions.
 
 ## Requirements
 
-·	 Android Studio: Version 4.2 or later.
+·	Android Studio: Version 4.2 or later.
+
 ·	Gradle: Used to manage dependencies and build the project.
+
 ·	Minimum Android Version: Android 5.0 (API Level 21).
+
 ·	Target Android Version: Android 12.0 (API Level 31).
+
 ·	Kotlin: Project developed using Kotlin.
+
 ·	Jetpack Compose: Used for UI development.
+
 ·	Room: For managing local database storage.
+
 ·	Navigation Component: To manage navigation between screens.
 
 ## Necessary Tools:
