@@ -46,8 +46,10 @@ Friendly animations and UI transitions.
 
 ## Necessary Tools:
 
-·	 Android Studio (https://developer.android.com/studio)
+·	Android Studio (https://developer.android.com/studio)
+
 ·	JDK 8 or higher (latest version recommended)
+
 ·	Android device or Android emulator configured in Android Studio.
 
 ## Important Commands
@@ -70,24 +72,14 @@ The app follows the MVVM (Model-View-ViewModel) pattern, using Android Jetpack c
 
 ## Key Folders:
 
-·	 UI: Contains all the composable functions for the user interface.
+·	UI: Contains all the composable functions for the user interface.
+
 ·	Data: Manages the entities and persistence logic using Room.
+
 ·	ViewModel: Contains ViewModel classes that interact with repositories and expose data to the UI.
 
 
 # HotelBediaXApp
-
-## Splash
-![imagen](https://github.com/user-attachments/assets/373363c1-7045-4b57-8d51-9fc2d35c4bc0)
-
-## Destinations
-![imagen](https://github.com/user-attachments/assets/7dad1397-2643-4064-ab98-26daa3d08833)
-
-## Destination detail
-![imagen](https://github.com/user-attachments/assets/6d4fbc65-51b4-418f-8ce7-c992610a3ba6)
-
-## Add a new destination
-![imagen](https://github.com/user-attachments/assets/6a167339-dc92-440d-92f5-8d1e28b8934b)
 
 ## Short Video
 https://github.com/user-attachments/assets/0eb71f8a-fc5e-4e7a-8f21-21bf743f7bed
